@@ -3,14 +3,25 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-ejb:
+    name: Build EJB Module
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build backend
-        run: mvn -B -f backend-module clean package
+      
+      - name: Build and Test EJB Module
+        run: mvn -B -f ejb-module/pom.xml clean package
+        
+      - name: Display Test Results
+        if: always()
+        run: |
+          echo "Build completed!"
+          if [ -f ejb-module/target/surefire-reports/*.xml ]; then
+            echo "Test reports generated"
+          fi
