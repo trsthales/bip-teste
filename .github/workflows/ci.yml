@@ -6,6 +6,7 @@ jobs:
   build-ejb:
     name: Build EJB Module
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -15,7 +16,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
       
       - name: Build and Test EJB Module
-        run: mvn -B -f ejb-module/pom.xml clean package
+        run: mvn -B -f ejb-module/pom.xml clean package --no-transfer-progress
+
 
